@@ -11,6 +11,8 @@ from manager import user_manager
 import json
 from setup import setter
 
+from telegram import Bot 
+
 
 
 welcome_message = """
@@ -92,6 +94,7 @@ def main():
                     if not current_update['message']['text']:
                         
                         first_chat_text='New member'
+
                     
                     else:
                         print ("0.5")
@@ -116,9 +119,9 @@ def main():
                     print (current_update['message']['from'])
                     
                     client_info = current_update['message']['chat']
-                    message = current_update['message'] ['text']
                     print("done dealing with all the parameters")
 
+                    message = first_chat_text
 
 
                     update_info = ("""{}
@@ -149,9 +152,22 @@ def main():
                     #if this is a 'regestered' client proceed with normal stuff normal clients do 
                     print (client_info)
                     client = manager.current_members[client_info['id']]
-                    if new: client.send("This is a Very Beta version of the bot, please be gentle and DM me if you find any bugs :)")
-                    else: pass
+                    # if new: client.send("This is a Very Beta version of the bot, please be gentle and DM me if you find any bugs :)")
+                    # else: pass
+                    if current_update['message']['photo']:
+                        print ("incoming photo")
+                        client.send("you sent a photo")
+                        file_id = current_update['message'].photo[-1].file_id
+                        file = magnito_bot.bot.getFile(file_id)
+                        # file.download(location + "/pic1.jpg")
+                        client.run(message,  file_download = file.download)
+                        # print (location + "/pic1.jpg")
                     
+                    else:
+                        client.run(message)
+
+                    # print (f"This is the incoming message: {message}")
+                    # client.send(f"You sent \n{message}")
                     
                     
                     
@@ -173,9 +189,10 @@ def main():
                         if False: #reason to reset user 
                             pass    #reset user and stuff
                         else:
-                            print ("Client info:")
-                            print (client.id)
-                            client.run(message)
+                            pass 
+                            # print ("Client info:")
+                            # print (client.id)
+                            # client.run(message)
 
                 else:
 
@@ -183,14 +200,14 @@ def main():
                 new_offset = first_update_id + 1
 
 
-try:
-    if __name__ == '__main__':
-        main()
-except KeyboardInterrupt:
-    print ("The bot has shut down due to Keyboard Interruption ")
-    ad_bot.send("The bot has shut down due to Keyboard Interruption ")
-    exit()
-except:
-    print ("The bot has shut down due to unknown reasons which probably need investigation")
-    ad_bot.send("The bot has shut down due to unknown reasons which probably need investigation")
-    exit()
+# try:
+if __name__ == '__main__':
+    main()
+# except KeyboardInterrupt:
+#     print ("The bot has shut down due to Keyboard Interruption ")
+#     ad_bot.send("The bot has shut down due to Keyboard Interruption ")
+#     exit()
+# except:
+#     print ("The bot has shut down due to unknown reasons which probably need investigation")
+#     ad_bot.send("The bot has shut down due to unknown reasons which probably need investigation")
+#     exit()

@@ -1,6 +1,7 @@
 #v2.1 - the bot is now using the official Telegram bot API  
 #the code needs lots of cleaning up 
 from telegram import Bot
+
 import requests
 
 
@@ -25,6 +26,7 @@ class simple_bot:
 
 class BotHandler:
     def __init__(self, token,directory = False ):
+        
         self.bot = Bot(token)
         #self.dir = directory
         #self.log_file = open(self.dir + "logs/tsendlog.txt",'a') 
@@ -60,10 +62,11 @@ class BotHandler:
         return last_update
     def send_file(self,chat_id,file_location):
         #file = file_location 
-        self.bot.send_file(id, open(file_location,'rb'))
-        files = {
-            'document': open(file, 'rb')
-        }
+        
+        self.bot.send_document(chat_id,  open(file_location,'rb'))
+        # files = {
+        #     'document': open(file_location, 'rb')
+        # }
 
         #message = (self.api_url + 'sendDocument?chat_id=' + str(chat_id))
 
